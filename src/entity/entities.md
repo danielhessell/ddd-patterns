@@ -38,3 +38,9 @@ deactivate() {
 ## Princípio da autovalidação
 
 Uma entidade sempre vai ter que se autovalidar, pois se essa responsabilidade ficar para qualquer outro objeto/rotina do sistema, ela está correndo o risco de, por um erro externo, ficar com estado incosistente.
+
+## Agregados
+
+> Customer >> Address(Value Object)
+> Order >> OrderItem
+> Product
