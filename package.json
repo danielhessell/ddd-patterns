@@ -9,6 +9,7 @@
     "typescript": "^4.8.4"
   },
   "scripts": {
-    "test": "jest"
+    "test": "npm run test:sintax -- --noEmit && jest",
+    "test:sintax": "tsc"
   }
 }
