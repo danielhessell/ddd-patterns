@@ -19,11 +19,19 @@ export class OrderItem {
     this._quantity = quantity;
   }
 
-  get quantity(): number {
-    return this._quantity;
+  get id(): string {
+    return this._id;
+  }
+
+  get name(): string {
+    return this._name;
   }
 
   get price(): number {
     return this._price * this._quantity;
+  }
+
+  get quantity(): number {
+    return this._quantity;
   }
 }
