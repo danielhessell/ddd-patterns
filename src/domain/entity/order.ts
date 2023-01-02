@@ -19,6 +19,19 @@ export class Order {
     return this._id;
   }
 
+  get customerId(): string {
+    return this._customerId;
+  }
+
+  get items(): OrderItem[] {
+    return this._items;
+  }
+
+  changeItems(items: OrderItem[]) {
+    this._items = items;
+    this.validate();
+  }
+
   validate(): boolean {
     if (this._id.length === 0) {
       throw new Error("ID is required.");
@@ -36,6 +49,9 @@ export class Order {
   }
 
   total(): number {
-    return this._items.reduce((acc, item) => acc + item.price, 0);
+    return this._items.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
   }
 }
