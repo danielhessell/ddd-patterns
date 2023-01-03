@@ -116,7 +116,7 @@ describe("Order repository tests", () => {
     const orderRepository = new OrderRepository();
     await orderRepository.create(order);
 
-    order.items.map((orderItem) => orderItem.changeQuantity(4));
+    order.items.forEach((orderItem) => orderItem.changeQuantity(4));
 
     await orderRepository.update(order);
 
