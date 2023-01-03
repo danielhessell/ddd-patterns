@@ -116,7 +116,7 @@ describe("Order repository tests", () => {
     const orderRepository = new OrderRepository();
     await orderRepository.create(order);
 
-    order.changeItems([orderItem1]);
+    order.items.map((orderItem) => orderItem.changeQuantity(4));
 
     await orderRepository.update(order);
 
@@ -125,12 +125,10 @@ describe("Order repository tests", () => {
       include: ["items"],
     });
 
-    console.log(orderModel.toJSON());
-
     expect(orderModel.toJSON()).toStrictEqual({
       id: "O001",
       customer_id: "C001",
-      total: 20,
+      total: 80,
       items: [
         {
           id: orderItem1.id,

@@ -38,4 +38,8 @@ export class OrderItem {
   get quantity(): number {
     return this._quantity;
   }
+
+  changeQuantity(quantity: number) {
+    this._quantity = quantity;
+  }
 }
