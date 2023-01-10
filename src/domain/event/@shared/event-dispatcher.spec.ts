@@ -3,7 +3,8 @@ import { Customer } from "../../entity/customer";
 import { CustomerAddressChangedEvent } from "../customer/customer-address-changed.event";
 import { CustomerCreatedEvent } from "../customer/customer-created.event";
 import { SendConsoleLogWhenCustomerAddressIsChangedHandler } from "../customer/handler/send-console-log-when-customer-address-is-changed.handler";
-import { SendConsoleLogWhenCustomerIsCreatedHandler } from "../customer/handler/send-console-log-when-customer-is-created.handler";
+import { SendFirstConsoleLogWhenCustomerIsCreatedHandler } from "../customer/handler/send-first-console-log-when-customer-is-created.handler";
+import { SendSecondConsoleLogWhenCustomerIsCreatedHandler } from "../customer/handler/send-second-console-log-when-customer-is-created.handler";
 import { SendEmailWhenProductIsCreatedHandler } from "../product/handler/send-email-when-product-is-created.handler";
 import { ProductCreatedEvent } from "../product/product-created.event";
 import { EventDispatcher } from "./event-dispatcher";
@@ -87,14 +88,22 @@ describe("Domain events tests", () => {
 
   it("should send console log when customer is created", () => {
     const eventDispatcher = new EventDispatcher();
-    const eventHandler = new SendConsoleLogWhenCustomerIsCreatedHandler();
-    const spyEventHandler = jest.spyOn(eventHandler, "handle");
+    const eventHandler1 = new SendFirstConsoleLogWhenCustomerIsCreatedHandler();
+    const spyEventHandler1 = jest.spyOn(eventHandler1, "handle");
 
-    eventDispatcher.register("CustomerCreatedEvent", eventHandler);
+    const eventHandler2 =
+      new SendSecondConsoleLogWhenCustomerIsCreatedHandler();
+    const spyEventHandler2 = jest.spyOn(eventHandler2, "handle");
+
+    eventDispatcher.register("CustomerCreatedEvent", eventHandler1);
+    eventDispatcher.register("CustomerCreatedEvent", eventHandler2);
 
     expect(
       eventDispatcher.getEventHandlers["CustomerCreatedEvent"][0]
-    ).toMatchObject(eventHandler);
+    ).toMatchObject(eventHandler1);
+    expect(
+      eventDispatcher.getEventHandlers["CustomerCreatedEvent"][1]
+    ).toMatchObject(eventHandler2);
 
     const customer = new Customer("001", "John Doe");
     const address = new Address("Street 1", 123, "12345-678", "São Paulo");
@@ -104,7 +113,8 @@ describe("Domain events tests", () => {
 
     eventDispatcher.notify(customerCreatedEvent);
 
-    expect(spyEventHandler).toHaveBeenCalled();
+    expect(spyEventHandler1).toHaveBeenCalled();
+    expect(spyEventHandler2).toHaveBeenCalled();
   });
 
   it("should send console log when customer address is changed", () => {
